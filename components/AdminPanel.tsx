@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type Genre } from "@/lib/genres";
 import {
   verifyAdmin,
@@ -206,16 +206,17 @@ function Panel({ password }: { password: string }) {
   const [status, setStatus]   = useState("");
   const [saving, setSaving]   = useState(false);
 
-  async function load() {
-    setLoading(true);
-    const res = await adminGetData(password);
-    if (res.success && res.genres && res.votes) {
-      setData({ genres: res.genres, votes: res.votes });
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      const res = await adminGetData(password);
+      if (res.success && res.genres && res.votes) {
+        setData({ genres: res.genres, votes: res.votes });
+      }
+      setLoading(false);
     }
-    setLoading(false);
-  }
-
-  if (!data && !loading) load();
+    load();
+  }, [password]);
 
   function updateGenre(i: number, g: Genre) {
     if (!data) return;
