@@ -14,9 +14,9 @@ const colorMap: Record<string, string> = {
 };
 
 export default function ResultsChart({ initial }: { initial: Results }) {
-  const [results, setResults]   = useState<Results>(initial);
-  const [, startTransition]     = useTransition();
-  const [lastRefresh, setLast]  = useState(new Date());
+  const [results, setResults]  = useState<Results>(initial);
+  const [, startTransition]    = useTransition();
+  const [lastRefresh, setLast] = useState(new Date());
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -41,10 +41,41 @@ export default function ResultsChart({ initial }: { initial: Results }) {
     );
   }
 
+  // Detect tie: top two genres share the same vote count
+  const topVotes   = results.genres[0]?.votes ?? 0;
+  const tiedGenres = results.genres.filter((g) => g.votes === topVotes);
+  const isTie      = tiedGenres.length >= 2 && topVotes > 0;
+  const leaderIds  = new Set(isTie ? tiedGenres.map((g) => g.id) : [results.leaderId]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+
+      {/* Tie banner */}
+      {isTie && (
+        <div style={{
+          background: "rgba(255,215,0,0.07)",
+          border: "1px solid rgba(255,215,0,0.25)",
+          borderRadius: 14,
+          padding: "1rem 1.4rem",
+          display: "flex",
+          alignItems: "center",
+          gap: "1rem",
+        }}>
+          <span style={{ fontSize: "2rem" }}>⚖️</span>
+          <div>
+            <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "1.3rem", letterSpacing: "2px", color: "var(--gold)" }}>
+              It&apos;s a tie!
+            </div>
+            <div style={{ fontSize: "0.82rem", color: "var(--muted)" }}>
+              {tiedGenres.map((g) => `${g.emoji} ${g.label}`).join(" and ")} are level — every vote now decides the winner.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bars */}
       {results.genres.map((g) => {
-        const isLeader = g.id === results.leaderId;
+        const isLeader = leaderIds.has(g.id);
         const color    = colorMap[g.accentColor] ?? "#FFD700";
         return (
           <div key={g.id}>
@@ -61,12 +92,14 @@ export default function ResultsChart({ initial }: { initial: Results }) {
                 </span>
                 {isLeader && (
                   <span style={{
-                    background: "var(--gold)", color: "#000",
+                    background: isTie ? "rgba(255,215,0,0.15)" : "var(--gold)",
+                    color: isTie ? "var(--gold)" : "#000",
+                    border: isTie ? "1px solid rgba(255,215,0,0.4)" : "none",
                     fontSize: "0.6rem", fontWeight: 800, letterSpacing: "1.5px",
                     textTransform: "uppercase", padding: "0.2rem 0.55rem",
                     borderRadius: "100px",
                   }}>
-                    👑 Leading
+                    {isTie ? "⚖️ Tied" : "👑 Leading"}
                   </span>
                 )}
               </div>
