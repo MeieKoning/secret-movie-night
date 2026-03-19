@@ -19,25 +19,6 @@ export default async function Home() {
         textAlign: "center",
         padding: "4rem 2rem",
       }}>
-        {/* Haven badge */}
-        <div style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          background: "rgba(229,9,20,0.12)",
-          border: "1px solid rgba(229,9,20,0.35)",
-          borderRadius: "100px",
-          padding: "0.45rem 1.3rem",
-          fontSize: "0.75rem",
-          letterSpacing: "2.5px",
-          textTransform: "uppercase",
-          color: "#FF8080",
-          marginBottom: "2rem",
-          animation: "pulse-ring 2.5s ease infinite",
-        }}>
-          🎬 Haven Residents · Every Friday at 8 PM
-        </div>
-
         {/* Film strip */}
         <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", opacity: 0.5 }}>
           {Array.from({ length: 7 }).map((_, i) => (
@@ -53,7 +34,7 @@ export default async function Home() {
         {/* Title */}
         <h1 style={{
           fontFamily: "var(--font-bebas), sans-serif",
-          fontSize: "clamp(5rem, 14vw, 11rem)",
+          fontSize: "clamp(3.5rem, 9vw, 7rem)",
           lineHeight: 0.88,
           letterSpacing: "6px",
           marginBottom: "1.5rem",
