@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import VoteForm from "@/components/VoteForm";
 import AlreadyVoted from "@/components/AlreadyVoted";
+import Countdown from "@/components/Countdown";
 
 export default async function Home() {
   const cookieStore = await cookies();
@@ -21,11 +22,18 @@ export default async function Home() {
           One genre will be chosen. One film will be screened.{" "}
           <span className="text-neutral-200">The rest stays secret.</span>
         </p>
-        <div className="flex items-center justify-center gap-2 pt-2">
-          <div className="h-px w-12 bg-neutral-800" />
-          <span className="text-neutral-600 text-xs font-mono tracking-widest">CAST YOUR VOTE</span>
-          <div className="h-px w-12 bg-neutral-800" />
-        </div>
+        {!hasVoted && (
+          <div className="pt-4">
+            <Countdown />
+          </div>
+        )}
+        {!hasVoted && (
+          <div className="flex items-center justify-center gap-2 pt-6">
+            <div className="h-px w-12 bg-neutral-800" />
+            <span className="text-neutral-600 text-xs font-mono tracking-widest">CAST YOUR VOTE</span>
+            <div className="h-px w-12 bg-neutral-800" />
+          </div>
+        )}
       </header>
 
       {/* Content */}
