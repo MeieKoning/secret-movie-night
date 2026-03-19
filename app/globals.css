@@ -54,6 +54,27 @@ body::before {
 }
 
 .animate-fade-in-up { animation: fade-in-up 0.55s ease-out both; }
+.hero-cta {
+  background: linear-gradient(135deg, var(--red), #FF5252);
+  color: #fff;
+  padding: 1rem 2.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.hero-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(229,9,20,0.5);
+}
+
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.10s; }
 .stagger-3 { animation-delay: 0.15s; }

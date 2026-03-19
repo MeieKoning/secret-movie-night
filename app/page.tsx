@@ -91,26 +91,7 @@ export default async function Home() {
         </p>
 
         {!hasVoted && (
-          <a href="#vote" style={{
-            background: "linear-gradient(135deg, var(--red), #FF5252)",
-            color: "#fff",
-            border: "none",
-            padding: "1rem 2.5rem",
-            fontSize: "0.9rem",
-            fontWeight: 700,
-            borderRadius: "50px",
-            cursor: "pointer",
-            textTransform: "uppercase",
-            letterSpacing: "2px",
-            textDecoration: "none",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            transition: "transform 0.25s, box-shadow 0.25s",
-          }}
-          onMouseOver={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-3px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 16px 40px rgba(229,9,20,0.5)"; }}
-          onMouseOut={(e) =>  { (e.currentTarget as HTMLAnchorElement).style.transform = ""; (e.currentTarget as HTMLAnchorElement).style.boxShadow = ""; }}
-          >
+          <a href="#vote" className="hero-cta">
             🗳️ Cast Your Vote
           </a>
         )}
