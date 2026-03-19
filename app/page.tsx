@@ -2,10 +2,12 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import VoteForm from "@/components/VoteForm";
 import AlreadyVoted from "@/components/AlreadyVoted";
+import { getActiveGenres } from "@/app/actions";
 
 export default async function Home() {
-  const cookieStore = await cookies();
-  const hasVoted    = !!cookieStore.get("smn_voted");
+  const cookieStore   = await cookies();
+  const hasVoted      = !!cookieStore.get("smn_voted");
+  const activeGenres  = await getActiveGenres();
 
   return (
     <main style={{ position: "relative", zIndex: 1 }}>
@@ -99,7 +101,7 @@ export default async function Home() {
                 What kind of movie should play this Friday? Cast your vote — the result stays secret until the night.
               </p>
             </div>
-            <VoteForm />
+            <VoteForm genres={activeGenres} />
           </>
         )}
 

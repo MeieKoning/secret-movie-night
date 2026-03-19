@@ -1,49 +1,85 @@
-import { genres, type Results } from "./genres";
+import { genres as defaultGenres, type Genre, type Results } from "./genres";
 
-// In-memory fallback for local development (resets on server restart)
-const localStore = new Map<string, number>();
+// ── Local in-memory fallback for dev (no KV credentials) ──────────────────
+const localVotes  = new Map<string, number>();
+let   localGenres: Genre[] | null = null;
 
 function isKvConfigured() {
   return !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
 }
 
-async function incr(key: string): Promise<void> {
+// ── Genre config ───────────────────────────────────────────────────────────
+
+export async function getGenresConfig(): Promise<Genre[]> {
   if (isKvConfigured()) {
     const { kv } = await import("@vercel/kv");
-    await kv.incr(key);
+    const stored = await kv.get<Genre[]>("genres:config");
+    return stored ?? defaultGenres;
+  }
+  return localGenres ?? defaultGenres;
+}
+
+export async function setGenresConfig(genres: Genre[]): Promise<void> {
+  if (isKvConfigured()) {
+    const { kv } = await import("@vercel/kv");
+    await kv.set("genres:config", genres);
   } else {
-    localStore.set(key, (localStore.get(key) ?? 0) + 1);
+    localGenres = genres;
   }
 }
 
-async function mget(keys: string[]): Promise<number[]> {
+// ── Votes ──────────────────────────────────────────────────────────────────
+
+export async function incrementVote(genreId: string): Promise<void> {
+  if (isKvConfigured()) {
+    const { kv } = await import("@vercel/kv");
+    await kv.incr(`votes:${genreId}`);
+  } else {
+    localVotes.set(genreId, (localVotes.get(genreId) ?? 0) + 1);
+  }
+}
+
+export async function setVoteCount(genreId: string, count: number): Promise<void> {
+  if (isKvConfigured()) {
+    const { kv } = await import("@vercel/kv");
+    await kv.set(`votes:${genreId}`, count);
+  } else {
+    localVotes.set(genreId, count);
+  }
+}
+
+export async function resetAllVotes(genreIds: string[]): Promise<void> {
+  if (isKvConfigured()) {
+    const { kv } = await import("@vercel/kv");
+    await Promise.all(genreIds.map((id) => kv.set(`votes:${id}`, 0)));
+  } else {
+    genreIds.forEach((id) => localVotes.set(id, 0));
+  }
+}
+
+async function getVoteCounts(genres: Genre[]): Promise<number[]> {
+  const keys = genres.map((g) => `votes:${g.id}`);
   if (isKvConfigured()) {
     const { kv } = await import("@vercel/kv");
     const counts = await kv.mget<number[]>(...keys);
     return counts.map((c) => c ?? 0);
-  } else {
-    return keys.map((k) => localStore.get(k) ?? 0);
   }
-}
-
-export async function incrementVote(genreId: string): Promise<void> {
-  await incr(`votes:${genreId}`);
+  return keys.map((k) => localVotes.get(k.replace("votes:", "")) ?? 0);
 }
 
 export async function getAllVotes(): Promise<Results> {
-  const keys = genres.map((g) => `votes:${g.id}`);
-  const counts = await mget(keys);
-
-  const total = counts.reduce((sum, c) => sum + c, 0);
+  const genres = await getGenresConfig();
+  const counts = await getVoteCounts(genres);
+  const total  = counts.reduce((sum, c) => sum + c, 0);
 
   const ranked = genres
     .map((g, i) => ({
-      id: g.id,
-      label: g.label,
-      emoji: g.emoji,
+      id:          g.id,
+      label:       g.label,
+      emoji:       g.emoji,
       accentColor: g.accentColor,
-      votes: counts[i],
-      percentage: total > 0 ? Math.round((counts[i] / total) * 100) : 0,
+      votes:       counts[i],
+      percentage:  total > 0 ? Math.round((counts[i] / total) * 100) : 0,
     }))
     .sort((a, b) => b.votes - a.votes);
 
@@ -52,4 +88,10 @@ export async function getAllVotes(): Promise<Results> {
     total,
     leaderId: ranked[0]?.votes > 0 ? ranked[0].id : null,
   };
+}
+
+export async function getRawVotes(): Promise<Record<string, number>> {
+  const genres = await getGenresConfig();
+  const counts = await getVoteCounts(genres);
+  return Object.fromEntries(genres.map((g, i) => [g.id, counts[i]]));
 }

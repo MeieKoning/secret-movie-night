@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { genres } from "@/lib/genres";
+import { type Genre } from "@/lib/genres";
 import GenreCard from "./GenreCard";
 import { submitVote } from "@/app/actions";
 
 type State = "idle" | "loading" | "success" | "error";
 
-export default function VoteForm() {
+export default function VoteForm({ genres }: { genres: Genre[] }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [state, setState]       = useState<State>("idle");
   const [errorMsg, setErrorMsg] = useState("");
