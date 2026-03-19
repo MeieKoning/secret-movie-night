@@ -336,16 +336,21 @@ export default function AdminPanel() {
 
   return (
     <main style={{ position: "relative", zIndex: 1, maxWidth: 900, margin: "0 auto", padding: "3rem 2rem 6rem" }}>
-      <header style={{ marginBottom: "2.5rem" }}>
-        <div style={{ fontSize: "0.68rem", letterSpacing: "3px", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.6rem" }}>
-          🔐 Admin Panel
+      <header style={{ marginBottom: "2.5rem", display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+        <div>
+          <div style={{ fontSize: "0.68rem", letterSpacing: "3px", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.6rem" }}>
+            🔐 Admin Panel
+          </div>
+          <h1 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "3rem", letterSpacing: "3px" }}>
+            Manage Movie Night
+          </h1>
+          <p style={{ color: "var(--muted)", fontSize: "0.9rem", marginTop: "0.4rem" }}>
+            Edit genres, descriptions, and vote counts. Changes go live immediately.
+          </p>
         </div>
-        <h1 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "3rem", letterSpacing: "3px" }}>
-          Manage Movie Night
-        </h1>
-        <p style={{ color: "var(--muted)", fontSize: "0.9rem", marginTop: "0.4rem" }}>
-          Edit genres, descriptions, and vote counts. Changes go live immediately.
-        </p>
+        <a href="/" style={{ ...btnGhost, textDecoration: "none", whiteSpace: "nowrap", alignSelf: "flex-start" }}>
+          ← Back to Voting
+        </a>
       </header>
 
       <div style={card}>
