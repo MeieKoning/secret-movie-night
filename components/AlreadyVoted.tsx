@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Countdown from "./Countdown";
 
 export default function AlreadyVoted() {
   return (
@@ -26,17 +25,6 @@ export default function AlreadyVoted() {
         </p>
       </div>
 
-      {/* Divider */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem", width: "100%", maxWidth: 320 }}>
-        <div style={{ flex: 1, height: 1, background: "#1C1C2E" }} />
-        <span style={{ fontSize: "0.6rem", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>
-          Until Showtime
-        </span>
-        <div style={{ flex: 1, height: 1, background: "#1C1C2E" }} />
-      </div>
-
-      <Countdown />
-
       <Link href="/results" style={{
         padding: "0.75rem 2rem",
         borderRadius: "50px",
@@ -45,7 +33,6 @@ export default function AlreadyVoted() {
         fontSize: "0.85rem",
         textDecoration: "none",
         letterSpacing: "1px",
-        transition: "border-color 0.2s, color 0.2s",
       }}>
         Peek at the votes →
       </Link>

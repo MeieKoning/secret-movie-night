@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <main style={{ position: "relative", zIndex: 1 }}>
       {/* ── HERO ── */}
-      <section style={{
+      {!hasVoted && <section style={{
         minHeight: "88vh",
         display: "flex",
         flexDirection: "column",
@@ -78,7 +78,7 @@ export default async function Home() {
             🗳️ Cast Your Vote
           </a>
         )}
-      </section>
+      </section>}
 
       {/* ── VOTE / ALREADY VOTED ── */}
       <section id="vote" style={{
@@ -105,12 +105,6 @@ export default async function Home() {
           </>
         )}
 
-        <div style={{ textAlign: "center", marginTop: "3rem" }}>
-          <Link href="/results" style={{ color: "var(--muted)", fontSize: "0.85rem", textDecoration: "none", letterSpacing: "1px" }}
-            className="hover:text-white transition-colors">
-            View live results →
-          </Link>
-        </div>
       </section>
     </main>
   );
