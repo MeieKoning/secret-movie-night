@@ -1,6 +1,24 @@
+"use client";
+
+import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import Countdown from "./Countdown";
 
 export default function Nav() {
+  const clickCount = useRef(0);
+  const timer      = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const router     = useRouter();
+
+  function handleLogoClick() {
+    clickCount.current += 1;
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => { clickCount.current = 0; }, 600);
+    if (clickCount.current >= 3) {
+      clickCount.current = 0;
+      router.push("/admin");
+    }
+  }
+
   return (
     <nav
       style={{
@@ -16,8 +34,9 @@ export default function Nav() {
         zIndex: 100,
       }}
     >
-      {/* Logo */}
+      {/* Logo — triple-click to open admin */}
       <div
+        onClick={handleLogoClick}
         style={{
           fontFamily: "var(--font-bebas), sans-serif",
           fontSize: "1.7rem",
@@ -26,6 +45,7 @@ export default function Nav() {
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           userSelect: "none",
+          cursor: "pointer",
         }}
       >
         🎬 Movie Night

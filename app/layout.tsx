@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="border-t border-[#1C1C2E] py-8 text-center text-sm" style={{ color: "var(--muted)" }}>
           <p>🎬 Secret Movie Night — Where every Friday is a surprise</p>
           <p className="mt-1 opacity-50 text-xs">Haven · Votes reset each week</p>
+          <a href="/admin" className="mt-3 inline-block opacity-0 hover:opacity-20 transition-opacity duration-300 text-xs" style={{ color: "var(--muted)" }}>·</a>
         </footer>
       </body>
     </html>
