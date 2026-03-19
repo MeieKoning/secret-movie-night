@@ -1,36 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0f;
-  --foreground: #ededed;
+  --gold:        #FFD700;
+  --gold-dark:   #FF6B35;
+  --red:         #E50914;
+  --dark:        #07070F;
+  --dark-card:   #0E0E1C;
+  --dark-border: #1C1C2E;
+  --muted:       rgba(255,255,255,0.55);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-
-html {
-  background: var(--background);
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-}
-
-/* Radial spotlight from top — cinematic feel */
-body::after {
-  content: "";
-  position: fixed;
-  top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80vw;
-  height: 60vh;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.03) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+html, body {
+  background: var(--dark);
+  color: #fff;
+  overflow-x: hidden;
 }
 
 /* Film grain */
@@ -45,24 +28,35 @@ body::before {
   opacity: 0.025;
 }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(229,9,20,0.25); }
+  50%       { box-shadow: 0 0 0 8px rgba(229,9,20,0);    }
+}
+
+@keyframes flicker {
+  0%, 90%, 100% { opacity: 0.5; }
+  95%            { opacity: 1;   }
+}
+
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
-.animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out both;
+@keyframes wb-float {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-6px); }
 }
 
+.animate-fade-in-up { animation: fade-in-up 0.55s ease-out both; }
 .stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.10s; }
 .stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.2s; }
+.stagger-4 { animation-delay: 0.20s; }
 .stagger-5 { animation-delay: 0.25s; }
-.stagger-6 { animation-delay: 0.3s; }
+.stagger-6 { animation-delay: 0.30s; }

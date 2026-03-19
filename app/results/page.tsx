@@ -8,28 +8,33 @@ export default async function ResultsPage() {
   const results = await getResults();
 
   return (
-    <main className="min-h-screen flex flex-col px-4 py-16 max-w-2xl mx-auto w-full">
-      <header className="text-center mb-12 space-y-3">
-        <div className="inline-block text-xs font-mono tracking-[0.3em] uppercase text-neutral-500 border border-neutral-800 px-4 py-1.5 rounded-full mb-4">
-          Live Results
+    <main style={{ position: "relative", zIndex: 1, maxWidth: 760, margin: "0 auto", padding: "4rem 2rem 6rem" }}>
+      <header style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <div style={{ fontSize: "0.68rem", letterSpacing: "3px", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.8rem" }}>
+          📊 Live Results
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+        <h1 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "clamp(2.8rem, 6vw, 4rem)", letterSpacing: "3px", marginBottom: "0.8rem" }}>
           The Envelope, So Far
         </h1>
-        <p className="text-neutral-500 text-sm max-w-xs mx-auto">
+        <p style={{ color: "var(--muted)", maxWidth: 380, margin: "0 auto", lineHeight: 1.7 }}>
           Votes are still coming in. The final genre will be revealed on the night.
         </p>
       </header>
 
-      <div className="flex-1 border border-neutral-800/60 rounded-2xl p-6 sm:p-8 bg-white/[0.02]">
+      <div style={{
+        background: "#0E0E1C",
+        border: "1px solid #1C1C2E",
+        borderRadius: 20,
+        padding: "2rem 2.5rem",
+      }}>
         <ResultsChart initial={results} />
       </div>
 
-      <footer className="mt-10 text-center text-neutral-700 text-xs font-mono">
-        <Link href="/" className="hover:text-neutral-400 transition-colors">
+      <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+        <Link href="/" style={{ color: "var(--muted)", fontSize: "0.85rem", textDecoration: "none" }}>
           ← Back to voting
         </Link>
-      </footer>
+      </div>
     </main>
   );
 }

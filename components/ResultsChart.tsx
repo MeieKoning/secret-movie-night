@@ -4,87 +4,95 @@ import { useEffect, useState, useTransition } from "react";
 import { getResults } from "@/app/actions";
 import type { Results } from "@/lib/genres";
 
-const barColor: Record<string, string> = {
-  amber: "bg-amber-500",
-  red: "bg-red-600",
-  violet: "bg-violet-500",
-  orange: "bg-orange-500",
-  yellow: "bg-yellow-400",
-  rose: "bg-rose-500",
+const colorMap: Record<string, string> = {
+  amber:  "#FFD700",
+  red:    "#FF6B6B",
+  violet: "#B39DDB",
+  orange: "#FF6B35",
+  yellow: "#FFD93D",
+  rose:   "#FF79C6",
 };
 
-const textColor: Record<string, string> = {
-  amber: "text-amber-400",
-  red: "text-red-400",
-  violet: "text-violet-400",
-  orange: "text-orange-400",
-  yellow: "text-yellow-300",
-  rose: "text-rose-400",
-};
-
-type Props = {
-  initial: Results;
-};
-
-export default function ResultsChart({ initial }: Props) {
-  const [results, setResults] = useState<Results>(initial);
-  const [, startTransition] = useTransition();
-  const [lastRefresh, setLastRefresh] = useState(new Date());
+export default function ResultsChart({ initial }: { initial: Results }) {
+  const [results, setResults]   = useState<Results>(initial);
+  const [, startTransition]     = useTransition();
+  const [lastRefresh, setLast]  = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const id = setInterval(() => {
       startTransition(async () => {
         const fresh = await getResults();
         setResults(fresh);
-        setLastRefresh(new Date());
+        setLast(new Date());
       });
     }, 30_000);
-    return () => clearInterval(interval);
+    return () => clearInterval(id);
   }, []);
 
-  return (
-    <div className="space-y-8">
-      {results.total === 0 ? (
-        <p className="text-center text-neutral-500 py-12 font-mono text-sm">
-          No votes cast yet. Be the first.
-        </p>
-      ) : (
-        <div className="space-y-4">
-          {results.genres.map((g) => {
-            const isLeader = g.id === results.leaderId;
-            const bar = barColor[g.accentColor] ?? barColor.amber;
-            const text = textColor[g.accentColor] ?? textColor.amber;
-            return (
-              <div key={g.id} className="space-y-1.5">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <span>{g.emoji}</span>
-                    <span className={isLeader ? "text-white font-semibold" : "text-neutral-300"}>
-                      {g.label}
-                    </span>
-                    {isLeader && (
-                      <span className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase border border-neutral-700 px-1.5 py-0.5 rounded">
-                        Leading
-                      </span>
-                    )}
-                  </div>
-                  <span className={`font-mono text-xs ${isLeader ? text : "text-neutral-500"}`}>
-                    {g.votes} {g.votes === 1 ? "vote" : "votes"} · {g.percentage}%
-                  </span>
-                </div>
-                <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all duration-700 ease-out ${bar} ${isLeader ? "opacity-90" : "opacity-40"}`}
-                    style={{ width: `${g.percentage}%` }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+  if (results.total === 0) {
+    return (
+      <div style={{ textAlign: "center", padding: "3rem 0" }}>
+        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🎬</div>
+        <div style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "1.8rem", letterSpacing: "3px", color: "var(--gold)", marginBottom: "0.4rem" }}>
+          No votes yet — be first!
         </div>
-      )}
+        <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>Every great movie night starts with a single vote.</p>
+      </div>
+    );
+  }
 
-      <div className="flex items-center justify-between text-xs font-mono text-neutral-700 pt-4 border-t border-neutral-800/50">
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {results.genres.map((g) => {
+        const isLeader = g.id === results.leaderId;
+        const color    = colorMap[g.accentColor] ?? "#FFD700";
+        return (
+          <div key={g.id}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                <span>{g.emoji}</span>
+                <span style={{
+                  fontFamily: "var(--font-bebas), sans-serif",
+                  fontSize: "1.3rem",
+                  letterSpacing: "1.5px",
+                  color: isLeader ? color : "#fff",
+                }}>
+                  {g.label}
+                </span>
+                {isLeader && (
+                  <span style={{
+                    background: "var(--gold)", color: "#000",
+                    fontSize: "0.6rem", fontWeight: 800, letterSpacing: "1.5px",
+                    textTransform: "uppercase", padding: "0.2rem 0.55rem",
+                    borderRadius: "100px",
+                  }}>
+                    👑 Leading
+                  </span>
+                )}
+              </div>
+              <span style={{ fontSize: "0.8rem", color: "var(--muted)", fontVariantNumeric: "tabular-nums" }}>
+                {g.votes} {g.votes === 1 ? "vote" : "votes"} · {g.percentage}%
+              </span>
+            </div>
+            <div style={{ height: 5, background: "rgba(255,255,255,0.07)", borderRadius: 3, overflow: "hidden" }}>
+              <div style={{
+                height: "100%", borderRadius: 3,
+                background: color,
+                width: `${g.percentage}%`,
+                opacity: isLeader ? 1 : 0.4,
+                transition: "width 0.7s cubic-bezier(0.34,1.56,0.64,1)",
+              }} />
+            </div>
+          </div>
+        );
+      })}
+
+      <div style={{
+        display: "flex", justifyContent: "space-between",
+        fontSize: "0.72rem", color: "rgba(255,255,255,0.25)",
+        paddingTop: "1rem", borderTop: "1px solid #1C1C2E",
+        fontVariantNumeric: "tabular-nums",
+      }}>
         <span>{results.total} total {results.total === 1 ? "vote" : "votes"}</span>
         <span>Refreshes every 30s · {lastRefresh.toLocaleTimeString()}</span>
       </div>

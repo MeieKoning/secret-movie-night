@@ -5,44 +5,149 @@ import AlreadyVoted from "@/components/AlreadyVoted";
 
 export default async function Home() {
   const cookieStore = await cookies();
-  const hasVoted = !!cookieStore.get("smn_voted");
+  const hasVoted    = !!cookieStore.get("smn_voted");
 
   return (
-    <main className="min-h-screen flex flex-col px-4 py-16 max-w-4xl mx-auto w-full">
-      {/* Header */}
-      <header className={`text-center space-y-4 ${hasVoted ? "mb-1" : "mb-14"}`}>
-        <div className="inline-block text-xs font-mono tracking-[0.3em] uppercase text-neutral-500 border border-neutral-800 px-4 py-1.5 rounded-full mb-6">
-          Haven Residents Only
+    <main style={{ position: "relative", zIndex: 1 }}>
+      {/* ── HERO ── */}
+      <section style={{
+        minHeight: "88vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        padding: "4rem 2rem",
+      }}>
+        {/* Haven badge */}
+        <div style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          background: "rgba(229,9,20,0.12)",
+          border: "1px solid rgba(229,9,20,0.35)",
+          borderRadius: "100px",
+          padding: "0.45rem 1.3rem",
+          fontSize: "0.75rem",
+          letterSpacing: "2.5px",
+          textTransform: "uppercase",
+          color: "#FF8080",
+          marginBottom: "2rem",
+          animation: "pulse-ring 2.5s ease infinite",
+        }}>
+          🎬 Haven Residents · Every Friday at 8 PM
         </div>
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
-          Secret Movie Night
+
+        {/* Film strip */}
+        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", opacity: 0.5 }}>
+          {Array.from({ length: 7 }).map((_, i) => (
+            <div key={i} style={{
+              width: 14, height: 14,
+              background: "var(--gold)",
+              borderRadius: 3,
+              animation: `flicker 2s ease ${i * 0.15}s infinite`,
+            }} />
+          ))}
+        </div>
+
+        {/* Title */}
+        <h1 style={{
+          fontFamily: "var(--font-bebas), sans-serif",
+          fontSize: "clamp(5rem, 14vw, 11rem)",
+          lineHeight: 0.88,
+          letterSpacing: "6px",
+          marginBottom: "1.5rem",
+        }}>
+          <span style={{
+            display: "block",
+            background: "linear-gradient(180deg, #fff 30%, rgba(255,255,255,0.5))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>Secret</span>
+          <span style={{
+            display: "block",
+            background: "linear-gradient(135deg, var(--gold), var(--gold-dark))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            filter: "drop-shadow(0 0 40px rgba(255,215,0,0.4))",
+          }}>Movie</span>
+          <span style={{
+            display: "block",
+            background: "linear-gradient(180deg, #fff 30%, rgba(255,255,255,0.5))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>Night</span>
         </h1>
-        <p className="text-neutral-400 max-w-md mx-auto text-base leading-relaxed">
-          One genre will be chosen. One film will be screened.{" "}
-          <span className="text-neutral-200">The rest stays secret.</span>
+
+        <p style={{
+          fontSize: "1.1rem",
+          color: "var(--muted)",
+          maxWidth: 460,
+          lineHeight: 1.8,
+          marginBottom: "2.5rem",
+        }}>
+          You vote. The genre wins. The movie stays secret.
+          Every Friday is a surprise.
         </p>
+
         {!hasVoted && (
-          <div className="flex items-center justify-center gap-2 pt-2">
-            <div className="h-px w-12 bg-neutral-800" />
-            <span className="text-neutral-600 text-xs font-mono tracking-widest">CAST YOUR VOTE</span>
-            <div className="h-px w-12 bg-neutral-800" />
-          </div>
+          <a href="#vote" style={{
+            background: "linear-gradient(135deg, var(--red), #FF5252)",
+            color: "#fff",
+            border: "none",
+            padding: "1rem 2.5rem",
+            fontSize: "0.9rem",
+            fontWeight: 700,
+            borderRadius: "50px",
+            cursor: "pointer",
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            transition: "transform 0.25s, box-shadow 0.25s",
+          }}
+          onMouseOver={(e) => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-3px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 16px 40px rgba(229,9,20,0.5)"; }}
+          onMouseOut={(e) =>  { (e.currentTarget as HTMLAnchorElement).style.transform = ""; (e.currentTarget as HTMLAnchorElement).style.boxShadow = ""; }}
+          >
+            🗳️ Cast Your Vote
+          </a>
         )}
-      </header>
+      </section>
 
-      {/* Content */}
-      <div className="flex-1">
-        {hasVoted ? <AlreadyVoted /> : <VoteForm />}
-      </div>
+      {/* ── VOTE / ALREADY VOTED ── */}
+      <section id="vote" style={{
+        maxWidth: 1100,
+        margin: "0 auto",
+        padding: "3rem 2rem 6rem",
+      }}>
+        {hasVoted ? (
+          <AlreadyVoted />
+        ) : (
+          <>
+            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+              <div style={{ fontSize: "0.68rem", letterSpacing: "3px", textTransform: "uppercase", color: "var(--gold)", marginBottom: "0.8rem" }}>
+                📽️ This Week&apos;s Poll
+              </div>
+              <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "clamp(2.5rem, 5vw, 3.8rem)", letterSpacing: "3px", marginBottom: "0.8rem" }}>
+                Vote for the Genre
+              </h2>
+              <p style={{ color: "var(--muted)", maxWidth: 440, margin: "0 auto", lineHeight: 1.7 }}>
+                What kind of movie should play this Friday? Cast your vote — the result stays secret until the night.
+              </p>
+            </div>
+            <VoteForm />
+          </>
+        )}
 
-      {/* Footer */}
-      <footer className="mt-16 text-center text-neutral-700 text-xs font-mono space-x-4">
-        <Link href="/results" className="hover:text-neutral-400 transition-colors">
-          View Results
-        </Link>
-        <span>·</span>
-        <span>Haven {new Date().getFullYear()}</span>
-      </footer>
+        <div style={{ textAlign: "center", marginTop: "3rem" }}>
+          <Link href="/results" style={{ color: "var(--muted)", fontSize: "0.85rem", textDecoration: "none", letterSpacing: "1px" }}
+            className="hover:text-white transition-colors">
+            View live results →
+          </Link>
+        </div>
+      </section>
     </main>
   );
 }

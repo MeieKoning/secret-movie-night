@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bebas_Neue, Inter } from "next/font/google";
 import "./globals.css";
+import Nav from "@/components/Nav";
+import ParticleCanvas from "@/components/ParticleCanvas";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bebas = Bebas_Neue({
+  weight: "400",
+  variable: "--font-bebas",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -17,17 +20,18 @@ export const metadata: Metadata = {
   description: "Cast your vote. The genre stays secret until the night arrives.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-[#0a0a0f] text-neutral-100">{children}</body>
+    <html lang="en" className={`${bebas.variable} ${inter.variable} h-full`}>
+      <body className="min-h-full flex flex-col antialiased" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+        <ParticleCanvas />
+        <Nav />
+        {children}
+        <footer className="border-t border-[#1C1C2E] py-8 text-center text-sm" style={{ color: "var(--muted)" }}>
+          <p>🎬 Secret Movie Night — Where every Friday is a surprise</p>
+          <p className="mt-1 opacity-50 text-xs">Haven · Votes reset each week</p>
+        </footer>
+      </body>
     </html>
   );
 }
