@@ -21,11 +21,13 @@ export default async function Home() {
           One genre will be chosen. One film will be screened.{" "}
           <span className="text-neutral-200">The rest stays secret.</span>
         </p>
-        <div className="flex items-center justify-center gap-2 pt-2">
-          <div className="h-px w-12 bg-neutral-800" />
-          <span className="text-neutral-600 text-xs font-mono tracking-widest">CAST YOUR VOTE</span>
-          <div className="h-px w-12 bg-neutral-800" />
-        </div>
+        {!hasVoted && (
+          <div className="flex items-center justify-center gap-2 pt-2">
+            <div className="h-px w-12 bg-neutral-800" />
+            <span className="text-neutral-600 text-xs font-mono tracking-widest">CAST YOUR VOTE</span>
+            <div className="h-px w-12 bg-neutral-800" />
+          </div>
+        )}
       </header>
 
       {/* Content */}
