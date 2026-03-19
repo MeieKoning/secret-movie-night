@@ -10,7 +10,7 @@ import {
   adminResetVotes,
 } from "@/app/actions";
 
-const ACCENT_COLORS = ["amber", "red", "violet", "orange", "yellow", "rose"];
+const ACCENT_COLORS = ["amber", "red", "violet", "orange", "yellow", "rose", "teal", "blue", "green", "indigo", "pink", "cyan"];
 
 const colorHex: Record<string, string> = {
   amber:  "#FFD700",
@@ -19,6 +19,12 @@ const colorHex: Record<string, string> = {
   orange: "#FF6B35",
   yellow: "#FFD93D",
   rose:   "#FF79C6",
+  teal:   "#2DD4BF",
+  blue:   "#60A5FA",
+  green:  "#4ADE80",
+  indigo: "#818CF8",
+  pink:   "#F472B6",
+  cyan:   "#22D3EE",
 };
 
 type AdminData = { genres: Genre[]; votes: Record<string, number> };

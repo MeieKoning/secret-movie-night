@@ -49,6 +49,20 @@ export const genres: Genre[] = [
     description: "Yearning. Longing. Inevitable.",
     accentColor: "rose",
   },
+  {
+    id: "animation",
+    label: "Animation",
+    emoji: "✨",
+    description: "Anything is possible. Physics optional.",
+    accentColor: "teal",
+  },
+  {
+    id: "drama",
+    label: "Drama",
+    emoji: "🎭",
+    description: "Real emotions. Raw stories. No escape.",
+    accentColor: "blue",
+  },
 ];
 
 export type Results = {
