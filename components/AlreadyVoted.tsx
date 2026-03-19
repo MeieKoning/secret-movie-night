@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export default function AlreadyVoted() {
   return (
-    <div className="flex flex-col items-center justify-center gap-6 py-16 text-center">
-      <div className="text-8xl">🎟️</div>
+    <div className="flex flex-col items-center justify-center gap-6 py-6 text-center">
+      <div className="text-9xl">🎟️</div>
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold text-white">Your vote is sealed.</h2>
         <p className="text-neutral-400 max-w-sm">
