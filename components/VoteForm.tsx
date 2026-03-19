@@ -32,14 +32,15 @@ export default function VoteForm() {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {genres.map((genre) => (
-          <GenreCard
-            key={genre.id}
-            genre={genre}
-            selected={selected === genre.id}
-            onSelect={setSelected}
-            disabled={state === "loading" || state === "success"}
-          />
+        {genres.map((genre, i) => (
+          <div key={genre.id} className={`animate-fade-in-up stagger-${i + 1}`}>
+            <GenreCard
+              genre={genre}
+              selected={selected === genre.id}
+              onSelect={setSelected}
+              disabled={state === "loading" || state === "success"}
+            />
+          </div>
         ))}
       </div>
 
