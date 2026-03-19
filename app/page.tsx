@@ -10,7 +10,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen flex flex-col px-4 py-16 max-w-4xl mx-auto w-full">
       {/* Header */}
-      <header className={`text-center space-y-4 ${hasVoted ? "mb-4" : "mb-14"}`}>
+      <header className={`text-center space-y-4 ${hasVoted ? "mb-1" : "mb-14"}`}>
         <div className="inline-block text-xs font-mono tracking-[0.3em] uppercase text-neutral-500 border border-neutral-800 px-4 py-1.5 rounded-full mb-6">
           Haven Residents Only
         </div>
