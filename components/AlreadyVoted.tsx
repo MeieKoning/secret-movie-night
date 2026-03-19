@@ -18,10 +18,10 @@ export default function AlreadyVoted() {
       {/* Message */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
         <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "3rem", letterSpacing: "4px", color: "#fff" }}>
-          You&apos;re In.
+          Your Vote Is Cast.
         </h2>
         <p style={{ color: "var(--muted)", maxWidth: 340, margin: "0 auto", lineHeight: 1.7 }}>
-          Your vote is sealed in the envelope. The genre will be revealed when the lights go down.
+          The crowd has spoken — but the verdict stays hidden. The genre will be revealed when the lights go down.
         </p>
       </div>
 

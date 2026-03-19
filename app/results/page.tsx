@@ -14,10 +14,10 @@ export default async function ResultsPage() {
           📊 Live Results
         </div>
         <h1 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: "clamp(2.8rem, 6vw, 4rem)", letterSpacing: "3px", marginBottom: "0.8rem" }}>
-          The Envelope, So Far
+          The Crowd Has Spoken
         </h1>
         <p style={{ color: "var(--muted)", maxWidth: 380, margin: "0 auto", lineHeight: 1.7 }}>
-          Votes are still coming in. The final genre will be revealed on the night.
+          Votes are still rolling in. The winner stays sealed until the night begins.
         </p>
       </header>
 
