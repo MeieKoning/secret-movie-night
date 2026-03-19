@@ -36,7 +36,7 @@ export default function GenreCard({ genre, selected, onSelect, disabled }: Props
       onClick={() => onSelect(genre.id)}
       disabled={disabled}
       className={`
-        group relative w-full text-left rounded-xl border p-5 transition-all duration-300
+        group relative w-full h-full text-left rounded-xl border p-5 transition-all duration-300
         cursor-pointer select-none
         ${selected
           ? `${accent} ${bg} shadow-lg border-opacity-100 scale-[1.02]`

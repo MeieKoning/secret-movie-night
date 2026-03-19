@@ -33,7 +33,7 @@ export default function VoteForm() {
     <div className="space-y-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {genres.map((genre, i) => (
-          <div key={genre.id} className={`animate-fade-in-up stagger-${i + 1}`}>
+          <div key={genre.id} className={`animate-fade-in-up stagger-${i + 1} h-full`}>
             <GenreCard
               genre={genre}
               selected={selected === genre.id}
