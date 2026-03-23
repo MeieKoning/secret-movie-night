@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { type Genre, type Results } from "@/lib/genres";
 import {
   incrementVote,
+  decrementVote,
   getAllVotes,
   getGenresConfig,
   setGenresConfig,
@@ -37,6 +38,36 @@ export async function submitVote(
   await incrementVote(genreId);
 
   cookieStore.set(COOKIE_NAME, genreId, {
+    httpOnly: true,
+    maxAge: COOKIE_MAX_AGE,
+    path: "/",
+    sameSite: "lax",
+  });
+
+  return { success: true };
+}
+
+export async function changeVote(
+  newGenreId: string
+): Promise<{ success: boolean; error?: string }> {
+  const activeGenres = await getGenresConfig();
+  if (!activeGenres.find((g) => g.id === newGenreId)) {
+    return { success: false, error: "Unknown genre." };
+  }
+
+  const cookieStore = await cookies();
+  const oldGenreId = cookieStore.get(COOKIE_NAME)?.value;
+  if (!oldGenreId) {
+    return { success: false, error: "No existing vote found." };
+  }
+  if (oldGenreId === newGenreId) {
+    return { success: false, error: "That's already your vote." };
+  }
+
+  await decrementVote(oldGenreId);
+  await incrementVote(newGenreId);
+
+  cookieStore.set(COOKIE_NAME, newGenreId, {
     httpOnly: true,
     maxAge: COOKIE_MAX_AGE,
     path: "/",

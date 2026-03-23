@@ -30,6 +30,16 @@ export async function setGenresConfig(genres: Genre[]): Promise<void> {
 
 // ── Votes ──────────────────────────────────────────────────────────────────
 
+export async function decrementVote(genreId: string): Promise<void> {
+  if (isKvConfigured()) {
+    const { kv } = await import("@vercel/kv");
+    const current = await kv.get<number>(`votes:${genreId}`) ?? 0;
+    await kv.set(`votes:${genreId}`, Math.max(0, current - 1));
+  } else {
+    localVotes.set(genreId, Math.max(0, (localVotes.get(genreId) ?? 0) - 1));
+  }
+}
+
 export async function incrementVote(genreId: string): Promise<void> {
   if (isKvConfigured()) {
     const { kv } = await import("@vercel/kv");

@@ -6,7 +6,8 @@ import { getActiveGenres } from "@/app/actions";
 
 export default async function Home() {
   const cookieStore   = await cookies();
-  const hasVoted      = !!cookieStore.get("smn_voted");
+  const votedGenreId  = cookieStore.get("smn_voted")?.value ?? null;
+  const hasVoted      = !!votedGenreId;
   const activeGenres  = await getActiveGenres();
 
   return (
@@ -87,7 +88,7 @@ export default async function Home() {
         padding: "3rem 2rem 6rem",
       }}>
         {hasVoted ? (
-          <AlreadyVoted />
+          <AlreadyVoted genres={activeGenres} currentVoteId={votedGenreId} />
         ) : (
           <>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>

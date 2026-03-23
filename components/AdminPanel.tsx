@@ -119,9 +119,12 @@ function GenreRow({
   onDelete: () => void;
   onVoteChange: (id: string, v: number) => void;
 }) {
-  const [saving, setSaving] = useState(false);
+  const [saving, setSaving]       = useState(false);
+  const [localVote, setLocalVote] = useState(String(votes));
 
-  async function saveVote(val: number) {
+  async function saveVote() {
+    const val = parseInt(localVote) || 0;
+    if (val === votes) return;
     setSaving(true);
     await adminSetVote(password, genre.id, val);
     onVoteChange(genre.id, val);
@@ -176,8 +179,9 @@ function GenreRow({
           style={{ ...input, textAlign: "center", padding: "0.6rem 0.4rem" }}
           type="number"
           min={0}
-          value={votes}
-          onChange={(e) => saveVote(parseInt(e.target.value) || 0)}
+          value={localVote}
+          onChange={(e) => setLocalVote(e.target.value)}
+          onBlur={saveVote}
           title="Edit vote count"
         />
         {saving && <span style={{ color: "var(--gold)", fontSize: "0.7rem" }}>✓</span>}
@@ -256,7 +260,7 @@ function Panel({ password }: { password: string }) {
   }
 
   async function resetVotes() {
-    if (!confirm("Reset all vote counts to zero?")) return;
+    if (window.prompt('Type "RESET" to confirm clearing all votes:') !== "RESET") return;
     const res = await adminResetVotes(password);
     if (res.success && data) {
       const votes = Object.fromEntries(data.genres.map((g) => [g.id, 0]));
